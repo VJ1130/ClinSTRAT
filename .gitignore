@@ -1,0 +1,10 @@
+# Ignore raw data archives and tables
+*.tar.gz
+*.txt
+*.tsv
+*.csv
+brca_metabric/
+
+# Ignore Python & Jupyter cache files
+__pycache__/
+.ipynb_checkpoints/
