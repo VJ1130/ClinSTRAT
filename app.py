@@ -16,7 +16,7 @@ st.divider()
 if mode.startswith("Upload"):
     st.write(
         "Upload a CSV with one row per patient, using the same raw columns as "
-        "`feature_matrix.csv` (clinical fields + gene expression + pathway scores). "
+        "`test_patients.csv` / `feature_matrix.csv` (clinical fields + gene expression + pathway scores). "
         "Missing columns are filled with 0."
     )
     file = st.file_uploader("Patient data CSV", type=["csv"])
