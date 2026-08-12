@@ -1,6 +1,5 @@
 # Ignore raw data archives and tables
 *.tar.gz
-*.txt
 *.tsv
 *.csv
 brca_metabric/
