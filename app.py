@@ -19,16 +19,52 @@ if mode.startswith("Upload"):
         "`test_patients.csv` / `feature_matrix.csv` (clinical fields + gene expression + pathway scores). "
         "Missing columns are filled with 0."
     )
+    st.caption(
+        "⚠️ This model needs a real microarray gene expression profile per patient — not just clinical "
+        "symptoms. It's built for labs/researchers with existing sequencing data, not as a walk-up symptom checker."
+    )
+
+    template_cols = ["PATIENT_ID", "CLAUDIN_SUBTYPE"] + get_feature_columns()
+    template_csv = pd.DataFrame(columns=template_cols).to_csv(index=False)
+    st.download_button(
+        "Download a blank template CSV (correct column headers)",
+        template_csv,
+        file_name="clinstrat_template.csv",
+    )
+
     file = st.file_uploader("Patient data CSV", type=["csv"])
     if file is not None:
-        df_raw = pd.read_csv(file)
+        try:
+            df_raw = pd.read_csv(file)
+        except Exception:
+            st.error("Couldn't read that file — make sure it's a valid, comma-separated CSV.")
+            st.stop()
+
+        if df_raw.empty or df_raw.shape[1] == 0:
+            st.error("This CSV is empty. Upload a file with at least one patient row.")
+            st.stop()
+
+        expected_cols = set(get_feature_columns())
+        overlap = expected_cols.intersection(df_raw.columns)
+        if len(overlap) < 5:
+            st.error(
+                f"This file only matches {len(overlap)} of the ~{len(expected_cols)} expected columns — "
+                "it doesn't look like it's in the required format. Download the template above, or reuse "
+                "`test_patients.csv` / `feature_matrix.csv`, and match those column headers."
+            )
+            st.stop()
+
         true_labels = df_raw["CLAUDIN_SUBTYPE"].copy() if "CLAUDIN_SUBTYPE" in df_raw.columns else None
         drop_cols = [c for c in ["PATIENT_ID", "CLAUDIN_SUBTYPE"] if c in df_raw.columns]
         df_raw = df_raw.drop(columns=drop_cols)
 
         if st.button("Predict"):
-            with st.spinner("Running model..."):
-                results = predict_batch(df_raw)
+            try:
+                with st.spinner("Running model..."):
+                    results = predict_batch(df_raw)
+            except Exception as e:
+                st.error(f"Prediction failed — the file's columns don't line up with what the model expects. ({e})")
+                st.stop()
             st.success(f"Predicted {len(results)} patient(s).")
 
             if true_labels is not None:
