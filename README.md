@@ -48,7 +48,7 @@ Place the trained model artifacts (`clinstrat_model.pkl`, `clinstrat_scaler.pkl`
 
 ## Tools
 
-Python, pandas, scikit-learn, XGBoost, gseapy (ssGSEA), SQLite, Streamlit, seaborn/matplotlib
+Python, pandas, numpy, scikit-learn, XGBoost, gseapy (ssGSEA), SQLite, Streamlit, seaborn/matplotlib, joblib
 
 ## Data source
 
