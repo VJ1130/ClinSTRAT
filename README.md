@@ -12,6 +12,9 @@ An end-to-end machine learning pipeline that predicts breast cancer molecular su
 | Macro F1 | 0.79 |
 | Cohen's Kappa | 0.778 |
 
+Confusion Matrix
+![Confusion Matrix](assets/confusion_matrix.png)
+
 Evaluated on a held-out test set (20% split, never seen during training). Misclassifications cluster along biologically related subtype pairs (LumA↔LumB, Her2↔LumB) rather than randomly — evidence the model is learning real tumor biology, not noise.
 
 ## What it does
