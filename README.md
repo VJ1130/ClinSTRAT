@@ -22,6 +22,8 @@ Evaluated on a held-out test set (20% split, never seen during training). Miscla
 - Catches and corrects a target-leakage bug (`INTCLUST` — METABRIC's own subtype system leaking into the model)
 - Serves predictions through an interactive Streamlit app
 
+![Confusion Matrix](assets/confusion_matrix.png)
+
 ## Pipeline
 
 ```
